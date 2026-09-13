@@ -1,0 +1,12 @@
+.DS_Store
+
+.direnv
+
+core
+core-*
+result
+result-*
+
+flake.lock
+
+.idea/
