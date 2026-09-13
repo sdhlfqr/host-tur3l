@@ -9,6 +9,8 @@
   users.users.sayf = {
     isNormalUser = true;
     extraGroups = [ "docker" ];
+
+    shell = pkgs.fish;
   };
 
   # Host
@@ -16,6 +18,8 @@
 
   # Programs
   programs.ssh.startAgent = true;
+
+  programs.fish.enable = true;
 
   environment.systemPackages = with pkgs; [
     direnv
@@ -38,7 +42,7 @@
     "flakes"
   ];
 
-	# 
+	# Garbage
   nix.settings.auto-optimise-store = true;
 
   nix.gc = {
