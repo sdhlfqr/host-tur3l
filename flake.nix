@@ -37,11 +37,6 @@
         ];
       };
 
-      devShells.${system}.default = pkgs.mkShell {
-        buildInputs = with pkgs; [
-          nixfmt
-          git
-        ];
-      };
+      devShells.${system}.default = import ./shell.nix { inherit pkgs; };
     };
 }

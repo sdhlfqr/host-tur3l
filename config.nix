@@ -38,6 +38,7 @@
     "flakes"
   ];
 
+	# 
   nix.settings.auto-optimise-store = true;
 
   nix.gc = {
