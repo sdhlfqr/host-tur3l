@@ -13,7 +13,7 @@
     shell = pkgs.fish;
   };
 
-  # Host
+  # Network
   networking.hostName = "tur3l";
 
   # Programs
