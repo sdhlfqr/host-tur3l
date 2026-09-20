@@ -5,5 +5,6 @@
 pkgs.mkShell {
   buildInputs = with pkgs; [
     nixfmt
+    nil
   ];
 }

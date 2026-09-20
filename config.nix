@@ -3,6 +3,11 @@
   wsl = {
     enable = true;
     defaultUser = "sayf";
+
+    wslConf = {
+      automount.enabled = true;
+      automount.options = "metadata,uid=1000,gid=100,umask=022";
+    };
   };
 
   # Users
@@ -18,6 +23,8 @@
 
   # Programs
   programs.ssh.startAgent = true;
+
+  programs.nix-ld.enable = true;
 
   programs.fish.enable = true;
 
@@ -42,13 +49,18 @@
     "flakes"
   ];
 
-	# Garbage
+  nixpkgs.config.allowUnfree = true;
+
+  nix.settings.max-substitution-jobs = 64;
+  nix.settings.http-connections = 64;
+
+  # Garbage
   nix.settings.auto-optimise-store = true;
 
   nix.gc = {
     automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
+    dates = "daily";
+    options = "--delete-older-than 1d";
   };
 
   system.stateVersion = "26.05";
