@@ -12,14 +12,36 @@
 
     config-sayf.url = "github:sdhlfqr/config-sayf";
     config-sayf.flake = false;
+
+    config-sayf-secrets.url = "github:sdhlfqr/config-sayf-secrets";
+    config-sayf-secrets.flake = false;
+
+    antigravity.url = "github:jacopone/antigravity-nix";
+    antigravity.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
-    { self, nixpkgs, nixos-wsl, home-manager, config-sayf, ... }@inputs: let
-        system = "x86_64-linux";
-        nixosConfig = ./config.nix;
-        pkgs = nixpkgs.legacyPackages.${system};
-    in {
+    {
+      self,
+      nixpkgs,
+      nixos-wsl,
+      home-manager,
+      config-sayf,
+      config-sayf-secrets,
+      antigravity,
+      ...
+    }@inputs:
+    let
+      system = "x86_64-linux";
+
+      shell = ./shell.nix;
+      nixosConfig = ./config.nix;
+
+      pkgs = nixpkgs.legacyPackages.${system};
+    in
+    {
+      devShells.${system}.default = import shell { inherit pkgs; };
+
       nixosConfigurations.tur3l = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = [
@@ -32,11 +54,16 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
 
-            home-manager.users.sayf = import config-sayf;
+            home-manager.extraSpecialArgs = { inherit antigravity; };
+
+            home-manager.users.sayf = {
+              imports = [
+                (import config-sayf)
+                (import config-sayf-secrets)
+              ];
+            };
           }
         ];
       };
-
-      devShells.${system}.default = import ./shell.nix { inherit pkgs; };
     };
 }
