@@ -25,10 +25,18 @@
   programs.ssh.startAgent = true;
 
   programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc.lib
+    zlib
+    openssl
+    curl
+  ];
 
   programs.fish.enable = true;
 
   environment.systemPackages = with pkgs; [
+    tar
+    gzip
     direnv
     curl
     wget
